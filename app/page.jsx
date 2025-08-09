@@ -6,7 +6,7 @@ export default function Home() {
   const [cards, setCards] = useState([])
   const [currentCardIndex, setCurrentCardIndex] = useState(0)
   const [showAnswer, setShowAnswer] = useState(false)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [username, setUsername] = useState('')
   const [isUsernameSet, setIsUsernameSet] = useState(false)
@@ -14,10 +14,12 @@ export default function Home() {
   // Use environment variable for API URL, fallback to local development
   const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8002'
 
-  // Fetch cards from API
+  // Fetch cards from API when username is set
   useEffect(() => {
-    fetchCards()
-  }, [])
+    if (username && isUsernameSet) {
+      fetchCards()
+    }
+  }, [username, isUsernameSet])
 
   const fetchCards = async () => {
     if (!username) return // Don't fetch cards without a username
